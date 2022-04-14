@@ -1,11 +1,16 @@
+ifdef USE_INT
+MACRO = -DUSE_INT
+endif
+
 #compiler setup
 CXX = g++
 CXXFLAGS = -std=c++14  -pthread -O3 
 
 #Utility Files
-COMMON=
+COMMON = core/utils.h core/cxxopts.h core/get_time.h core/graph.h core/quick_sort.h
 
-SERIAL= file_serial 
+
+SERIAL= flooding 
 PARALLEL= file_parallel 
 DISTRIBUTED= file_distributed
 ALL= $(SERIAL) $(PARALLEL) $(DISTRIBUTED)
