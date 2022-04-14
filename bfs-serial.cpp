@@ -5,6 +5,8 @@
 #include <stdlib.h>
 
 void breadthFirstSearch(Graph &g, int init_node){
+    uintV n = g.n_;
+
     
 }
 

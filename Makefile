@@ -10,9 +10,9 @@ CXXFLAGS = -std=c++14  -pthread -O3
 COMMON = core/utils.h core/cxxopts.h core/get_time.h core/graph.h core/quick_sort.h
 
 
-SERIAL= flooding 
-PARALLEL= file_parallel 
-DISTRIBUTED= file_distributed
+SERIAL= bfs-serial 
+PARALLEL= bfs-parallel 
+DISTRIBUTED= bfs-distributed
 ALL= $(SERIAL) $(PARALLEL) $(DISTRIBUTED)
 
 all : $(ALL)
