@@ -15,7 +15,9 @@ To run the compiled file, use format:
 ./fileName --nThreads \# --nInitiaor \# --inputFile /path/to/input/file
 ```
 --nThreads is number of threads. Default value is 1
+
 --nInitiaor is the init node. Default value is 0
+
 --inputFile is the path to in put graph
 
 For example:
