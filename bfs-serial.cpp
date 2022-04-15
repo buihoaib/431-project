@@ -3,11 +3,50 @@
 #include <iomanip>
 #include <iostream>
 #include <stdlib.h>
+#include <queue>
+
 
 void breadthFirstSearch(Graph &g, int init_node){
-    uintV n = g.n_;
+    //timer
+    timer t1;
+    double time_taken = 0.0;
+    t1.start();
+    uint node_count = 0;
 
-    
+    //serial BFS algorithm
+
+    uintV n = g.n_;
+    std::queue<uintV> * vertices_queue = new std::queue<uintV>();
+    bool *visited = new bool[n];
+    for (int i = 0; i < n; i++)
+      visited[i] = false;
+    visited[init_node] = true;
+    node_count++;
+    vertices_queue->push(init_node);
+
+    while(!vertices_queue->empty()){
+      int currVertex = vertices_queue->front();
+      vertices_queue->pop();
+      node_count++;
+      uintE out_degree = g.vertices_[currVertex].getOutDegree();
+      for (int i = 0; i < out_degree; i++){
+        uintV neighbour = g.vertices_[currVertex].getOutNeighbor(i);
+        if(!visited[neighbour]){
+          visited[neighbour] = true;
+          vertices_queue->push(neighbour);
+        }
+      }
+    }
+
+    time_taken = t1.stop();
+    std::cout << "thread_id, time_taken" << std::endl;
+    std::cout << "0, " << time_taken << std::endl;
+    std::cout << "Total number of nodes: "<< n <<std::endl;
+    std::cout << "Number of nodes counted: "<< node_count <<std::endl;
+
+    //clean up allocated memories
+    delete vertices_queue;
+    delete visited;
 }
 
 int main(int argc, char *argv[]) {

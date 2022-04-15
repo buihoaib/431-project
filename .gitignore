@@ -1,3 +1,7 @@
+#Compiled files
 bfs-serrial
 bfs-parallel
 bfs-distributed
+
+#output files
+*.out
