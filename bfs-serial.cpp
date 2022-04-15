@@ -46,7 +46,7 @@ void breadthFirstSearch(Graph &g, int init_node){
 
     //clean up allocated memories
     delete vertices_queue;
-    delete visited;
+    delete[] visited;
 }
 
 int main(int argc, char *argv[]) {
