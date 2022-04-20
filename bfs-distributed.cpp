@@ -36,8 +36,6 @@ void breadthFirstSearch(Graph &g, int init_node) {
   std::vector<int> nextFrontier;
   std::vector<int> distance_from_source(n, -1);
 
-  // std::vector<int> recvCount (world_size, 0);
-
   //timer
   timer t1;
   t1.start();
@@ -67,36 +65,22 @@ void breadthFirstSearch(Graph &g, int init_node) {
       }
     }
 
-    // for (int i = 0; i < world_rank; i++) {
-    //   uint sendCount = buffers[i].size();
-    //   MPI_Reduce(&sendCount, &recvCount[i], 1, MPI_INT, MPI_SUM, i, MPI_COMM_WORLD);
-    // }
-
-    // gather buffer[world_rank] from all processes and combine it in recvBuffers[world_rank]
-    // this is a mess - need modification
-		MPI_Gather(&(buffers[world_rank]), buffers[world_rank].size(), MPI_INT, &recvBuffers, buffers[world_rank].size(), MPI_INT, world_rank, MPI_COMM_WORLD);
+    // gathering all buffers from other processes and put it in recvBuffers
+		for (int i = 0; i < world_size; i++) {
+			MPI_Gather(buffers[i].data(), buffers[i].size(), MPI_INT, recvBuffers[i].data(), buffers[i].size(), MPI_INT, i, MPI_COMM_WORLD);
+		}
 
     // Merge recvBuffers into nextFrontier
-    // for (int i = 0; i < world_size; i++) {
-    //   nextFrontier.insert(nextFrontier.end(), recvBuffers[i].begin(), recvBuffers[i].end()); // may contain duplicate vertices
-    // }
-
-    nextFrontier.insert(nextFrontier.end(), recvBuffers[world_rank].begin(), recvBuffers[world_rank].end()); // may contain duplicate vertices
-
-    // if (world_rank == 0) {
-    //   printf("nextFrontier of rank 0: ");
-    //   for (int i = 0; i < nextFrontier.size(); i++) {
-    //     printf("%d ", world_rank);
-    //   }
-    //   printf("\n");
-    // }
+    for (int i = 0; i < world_size; i++) {
+      nextFrontier.insert(nextFrontier.end(), recvBuffers[i].begin(), recvBuffers[i].end()); // may contain duplicate vertices
+    }
 
     currentFrontier.clear();
 
     for (int v = 0; v < nextFrontier.size(); v++) {
       if (distance_from_source[v] == -1) {
         distance_from_source[v] = level + 1;
-        currentFrontier.push_back(v); // no duplicate of vertices here because of the condition
+        currentFrontier.push_back(v); // no duplicate of vertices now because of the condition
         local_node_count++;
       }
     }
@@ -116,13 +100,13 @@ void breadthFirstSearch(Graph &g, int init_node) {
 
   double time_taken = t1.stop();
 
-  // if (world_rank == 0) {
-  //   std::cout << "Total number of nodes: " << n << "\n";
-  //   std::cout << "Number of nodes counted: " << node_count << "\n";
-  //   std::cout << "process_id, time_taken:\n";
-	// }
+  if (world_rank == 0) {
+    std::cout << "Total number of nodes: " << n << "\n";
+    std::cout << "Number of nodes counted: " << node_count << "\n";
+    std::cout << "process_id, time_taken:\n";
+	}
 
-  // std::cout << world_rank << ", " << time_taken << "\n";
+  std::cout << world_rank << ", " << time_taken << "\n";
 }
 
 int main(int argc, char *argv[]) {

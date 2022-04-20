@@ -2,7 +2,7 @@
 ## How to compile:
 Run this command: 
 ```
-make
+make all
 ```
 or 
 ```
@@ -10,17 +10,24 @@ make fileName
 ```
 
 ## Run the file:
-To run the compiled file, use format:
+To run the compiled serial and parallel files, use format:
 ```
-./fileName --nThreads \# --nInitiaor \# --inputFile /path/to/input/file
+./fileName --nThreads \# --nInitiators \# --inputFile /path/to/input/file
 ```
 --nThreads is number of threads. Default value is 1
 
---nInitiaor is the init node. Default value is 0
+--nInitiator is the init node. Default value is 0
 
---inputFile is the path to in put graph
+--inputFile is the path to input graph
 
 For example:
 ```
-./flooding --nThreads 4 --nInitiator 5  --inputFile /scratch/input_graphs/roadNet-CA
+./bfs-parallel-queue --nThreads 4 --nInitiator 5  --inputFile /scratch/input_graphs/roadNet-CA
 ```
+------
+
+* Note that we provided to bash files to run on the cluster:
+
+submit.sh: contains commands to run bfs-serial, bfs-parallel-queue, bfs-parallel-bag
+
+submit-distributed: contains command to run bfs-distributed
