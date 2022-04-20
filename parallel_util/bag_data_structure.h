@@ -1,3 +1,4 @@
+//Reference and idea for Bag data structure: https://github.com/nducthang/BFSParallel
 #pragma once
 #include <math.h>
 #include <algorithm>
@@ -9,8 +10,6 @@
 #define DEFAULT_SIZE 20
 
 using namespace std;
-
-
 
 
 class Node
