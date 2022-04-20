@@ -30,4 +30,4 @@ For example:
 
 submit.sh: contains commands to run bfs-serial, bfs-parallel-queue, bfs-parallel-bag
 
-submit-distributed: contains command to run bfs-distributed
+submit-distributed.sh: contains command to run bfs-distributed
