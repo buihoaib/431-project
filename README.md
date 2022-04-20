@@ -26,7 +26,7 @@ For example:
 ```
 ------
 
-* Note that we provided to bash files to run on the cluster:
+* Note that we provided the bash files to run on the cluster:
 
 submit.sh: contains commands to run bfs-serial, bfs-parallel-queue, bfs-parallel-bag
 
