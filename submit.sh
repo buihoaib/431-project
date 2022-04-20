@@ -6,4 +6,6 @@
 #SBATCH --partition=slow
 
 
-srun ./bfs-serial --nThreads 4 --nInitiator 0  --inputFile /scratch/input_graphs/web-Google
+srun ./bfs-serial --nThreads 8 --nInitiator 0 --inputFile /scratch/input_graphs/web-Google
+srun ./bfs-parallel-queue --nThreads 8 --nInitiator 0 --nGranularity 10000 --inputFile /scratch/input_graphs/web-Google
+srun ./bfs-parallel-bag --nThreads 8 --nInitiator 0 --nGranularity 10000 --inputFile /scratch/input_graphs/web-Google

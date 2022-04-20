@@ -1,3 +1,4 @@
+#pragma once
 #include "quick_sort.h"
 #include "utils.h"
 #include <fstream>
