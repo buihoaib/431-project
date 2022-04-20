@@ -36,8 +36,8 @@ public:
 	Pennant(Node* root);
 	~Pennant();
     Pennant* split_pennant();
-	void union_pennant(Pennant* y);
-	static void FA(Pennant* x, Pennant* y, Pennant* carry);
+	void union_pennant(Pennant* &y);
+	static void FA(Pennant* &x, Pennant* &y, Pennant* &z);
 
 };
 
@@ -55,18 +55,18 @@ Pennant::~Pennant(){
 		{
 			Node *curr_vertext = vertices_tree.top();
 			vertices_tree.pop();
-			if (curr_vertext->right_node != NULL){
-				vertices_tree.push(curr_vertext->right_node);
-			}
 			if (curr_vertext->left_node != NULL){
 				vertices_tree.push(curr_vertext->left_node);
+			}
+			if (curr_vertext->right_node != NULL){
+				vertices_tree.push(curr_vertext->right_node);
 			}
 			delete curr_vertext;
 		}
 	}
 }
 
-void Pennant::union_pennant(Pennant* y){
+void Pennant::union_pennant(Pennant* &y){
 	if (y == NULL) {
         return;
     }
@@ -90,7 +90,7 @@ Pennant* Pennant::split_pennant(){
 }
 
 //Based on illustration table on page 5 of A Work-Efficient Parallel Breadth-First Search Algorithm (or How to Cope with the Nondeterminism of Reducers) by Charles E. Leiserson & Tao B. Schardl
-void Pennant::FA(Pennant* x, Pennant* y, Pennant* z){
+void Pennant::FA(Pennant* &x, Pennant* &y, Pennant* &z){
 	if (x == NULL && y == NULL && z == NULL) {
 		return;
 	} else if (x != NULL && y == NULL && z == NULL) {
@@ -140,7 +140,6 @@ public:
 	int size();
 	Bag* split();
 	void insert(Pennant *&vertices);
-	void print();
 	void merge(Bag* y);
 
 };
@@ -159,12 +158,7 @@ void Bag::init(int r)
 	this->r = r;
 	this->max_index = -1;
 }
-//void Bag::copy(Bag* y)
-//{
-//	this->backbone = y->backbone;
-//	this->r = y->r;
-//	this->largest_nonempty_index = y->largest_nonempty_index;
-//}
+
 void Bag::clear() {
 	for (int i = 0; i <= this->max_index; i++) {
 		delete this->backbone[i];
@@ -246,15 +240,6 @@ void Bag::insert(Pennant *&vertices)
 	}
 }
 
-void Bag::print()
-{
-	cout << "Bag: { ";
-	for (int i = 0; i < this->r; i++)
-	{
-		cout << (this->backbone[i] != NULL)*pow(2, i) << " ";
-	}
-	cout << "}" << endl;
-}
 
 void Bag::merge(Bag* y)
 {
