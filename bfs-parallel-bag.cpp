@@ -1,5 +1,5 @@
 #include "core/graph.h"
-#include "parallel_util/bag.h"
+#include "parallel_util/bag_data_structure.h"
 #include "core/utils.h"
 #include <iomanip>
 #include <iostream>
@@ -32,14 +32,14 @@ void processLayer(Graph * g,Bag* currBag, Bag* nextBag, int * visited,uint level
 
                 if (currBag->backbone[i] != NULL){
                     nodes.push(currBag->backbone[i]->root);
-                    while (nodes.size() > 0){
+                    while (!nodes.empty()){
                         Node* current = nodes.top();
                         nodes.pop();
-                        if (current->left != NULL){
-                            nodes.push(current->left);
+                        if (current->left_node != NULL){
+                            nodes.push(current->left_node);
                         }
-                        if (current->right != NULL){
-                            nodes.push(current->right);
+                        if (current->right_node != NULL){
+                            nodes.push(current->right_node);
                         }
                         uintE out_degree = g->vertices_[current->vertex].getOutDegree();
                         for (int j = 0; j < out_degree; j++){
