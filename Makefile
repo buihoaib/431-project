@@ -5,6 +5,7 @@ endif
 #compiler setup
 CXX = g++
 CXXFLAGS = -std=c++14  -pthread -O3 
+MPICXX = mpic++
 
 #Utility Files
 COMMON = core/utils.h core/cxxopts.h core/get_time.h core/graph.h core/quick_sort.h
