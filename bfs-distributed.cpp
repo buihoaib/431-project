@@ -9,49 +9,6 @@
 
 #define DEFAULT_GRAIN_SIZE "25"
 
-// struct ThreadInfo {
-//     uint thread_id;
-//     uintV num_vertices;
-//     uintE num_edges;
-//     double totalTime;
-// };
-
-// void calculateBfsDynamic(ThreadInfo * thread_info,uint n_threads ,Graph * g, int level ,std::queue<uintV> * currentFrontier, std::queue<uintV> * nextFrontier, int * visited, CustomBarrier * barrier, std::mutex * mtx_currF, std::mutex * mtx_nextF, std::mutex * mtx_visited ) {
-//     //parallel BFS algorithm
-//     while(!currentFrontier->empty()){
-//       int granularity = currentFrontier->size() / n_threads;
-//       for (int j = 0; j < granularity; j ++){
-//         mtx_currF->lock();
-//         int currVertex = currentFrontier->front();
-//         currentFrontier->pop();
-//         mtx_currF->unlock();
-//         //node_count++;
-
-//         uintE out_degree = g->vertices_[currVertex].getOutDegree();
-//         for (int i = 0; i < out_degree; i++){
-//           uintV neighbour = g->vertices_[currVertex].getOutNeighbor(i);
-//           if(visited[neighbour]==-1){
-//             visited[neighbour] = level;
-
-//             mtx_nextF->lock();
-//             nextFrontier->push(neighbour);
-//             mtx_nextF->unlock();
-//           }
-//         }
-//       }
-//       barrier->wait();
-//       //Swap 2 queues
-//       if (thread_info->thread_id == 0) {
-//         std::queue<uintV> * temp = currentFrontier;
-//         currentFrontier = nextFrontier;
-//         nextFrontier =  temp;
-
-//         level++;
-//       }
-//       barrier->wait();
-//     }
-// }
-
 int findOwner(int vertex, int world_size) {
   if (world_size == 1) return 0;
   return vertex % world_size;
@@ -120,11 +77,11 @@ void breadthFirstSearch(Graph &g, int init_node) {
 		MPI_Gather(&(buffers[world_rank]), buffers[world_rank].size(), MPI_INT, &recvBuffers, buffers[world_rank].size(), MPI_INT, world_rank, MPI_COMM_WORLD);
 
     // Merge recvBuffers into nextFrontier
-    for (int i = 0; i < world_size; i++) {
-      nextFrontier.insert(nextFrontier.end(), recvBuffers[i].begin(), recvBuffers[i].end()); // may contain duplicate vertices
-    }
+    // for (int i = 0; i < world_size; i++) {
+    //   nextFrontier.insert(nextFrontier.end(), recvBuffers[i].begin(), recvBuffers[i].end()); // may contain duplicate vertices
+    // }
 
-    nextFrontier.insert(nextFrontier.end(), recvBuffers.begin(), recvBuffers.end()); // may contain duplicate vertices
+    nextFrontier.insert(nextFrontier.end(), recvBuffers[world_rank].begin(), recvBuffers[world_rank].end()); // may contain duplicate vertices
 
     // if (world_rank == 0) {
     //   printf("nextFrontier of rank 0: ");
